@@ -1,7 +1,9 @@
-
+import SearchTab from "./SearchTab"
 
 
 const Container = () => {
-  return <></>
+  return <>
+  <SearchTab />
+  </>
 } 
 export default Container

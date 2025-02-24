@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from "axios"
 
 const api: AxiosInstance = axios.create({
-  baseURL: "api.openweathermap.org",
+  baseURL: import.meta.env.VITE_API_URL,
 })
 
 export default api

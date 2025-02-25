@@ -18,10 +18,27 @@ interface IData {
 interface IResponse {
   data: [IData];
 }
+const ErrorDiv = styled.div`
+  font-family:  Arial, Helvetica, sans-serif;
+  font-size: 1.1rem;
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  color: #8f8f8f;
+`;
+
+const Flexbox = styled.div`
+  display: felx;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+`;
 
 const LineDiv = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
 `;
 
 const SearchInput = styled.input`
@@ -48,7 +65,7 @@ const StartForecastButton = styled.button`
   height: 45px;
   box-sizing: border-box;  
   border-radius: 0px 10px 10px 0px;
-  border: 1px solid rgb(43, 156, 230);
+  border: 1px solid #2b9ce6;
   background:rgb(43, 156, 230);
   font-family: Arial, Helvetica, sans-serif;
   color: #ffffff;
@@ -68,12 +85,13 @@ const StartForecastButton = styled.button`
 const SearchTab = () => {
   const [inputValue, setInputValue] = useState<string>("");
   const [forecastData, setForecastData] = useState<IForecastItem[]>([]);
-
+  const [errorStatus, setErrorStatus] = useState<boolean>(false);
   
 
   const startForecast = async (city: string) => {
     try {
       if (inputValue.trim()) {
+        setErrorStatus(false);
         const response: IResponse = await getLocation(city)
 
         if (Number(response.data.length) === 0) {
@@ -87,6 +105,7 @@ const SearchTab = () => {
     } catch (error) {
       if (error instanceof Error) {
         setForecastData([]);
+        setErrorStatus(true);
         console.log(error.message);
         return;
       }
@@ -105,13 +124,16 @@ const SearchTab = () => {
   // }
 
   return (<>
+  <Flexbox>
     <LineDiv>
       <SearchInput type="text" placeholder="введите город" value={inputValue} onChange={handleChange}/>
       <StartForecastButton onClick={() => startForecast(inputValue)}>
         Показать прогноз погоды
       </StartForecastButton>
     </LineDiv>
-   <Chart forecast={forecastData} />
-    </>)
+    {forecastData?.length > 0 && <Chart forecast={forecastData} />}
+    {errorStatus && <ErrorDiv>Нет такого города!</ErrorDiv>}
+  </Flexbox>
+  </>)
 }
 export default SearchTab

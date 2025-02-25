@@ -108,6 +108,7 @@ const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
       <p>{`Ощущается как: ${data.feels_like}°C`}</p>
       <p>{`Описание: ${data.description}`}</p>
       <p>{`Ветер: ${data.wind} м/с, порыв: ${data.gust}`}</p>
+      <p>{`Влажность: ${data.humidity}%`}</p>
     </div>
   );
 };
@@ -164,9 +165,9 @@ const Chart = ({ forecast }: ChartProps) => {
       {chartType === 3 ? <AreaChart width={500} height={400} data={temp.slice(0,8*daysCount)}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="time" style={{fontSize: "0.6rem"}}/>
-        <YAxis dataKey="pressure"/>
+        <YAxis dataKey="wind"/>
         <Tooltip content={<CustomTooltip />} />
-        <Area type="monotone" dataKey="pressure" stroke="#8884d8" fill="#8884d8" />
+        <Area type="monotone" dataKey="wind" stroke="#8884d8" fill="#8884d8" />
       </AreaChart> : <></>}
       
     </ChartContainer>
@@ -177,7 +178,7 @@ const Chart = ({ forecast }: ChartProps) => {
     <TabsLine>
       <TabButton active={chartTabsValue === 1} onClick={() => changeChartTabs(1, 1)}>температура</TabButton>
       <TabButton active={chartTabsValue === 2} onClick={() => changeChartTabs(2, 2)}>влажность</TabButton>
-      <TabButton active={chartTabsValue === 3} onClick={() => changeChartTabs(3, 3)}>давление</TabButton>
+      <TabButton active={chartTabsValue === 3} onClick={() => changeChartTabs(3, 3)}>ветер</TabButton>
     </TabsLine>
   </ChartsRoot>)
 }
